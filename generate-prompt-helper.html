@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>Excel/CSV から HTML生成 (no Python)</title>
+
+  <!-- SheetJS (xlsx) CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.6/dist/xlsx.full.min.js"></script>
+  <!-- PapaParse CDN (CSVパース用) -->
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.1/papaparse.min.js"></script>
+
+  <style>
+    body {
+      max-width: 800px;
+      margin: 1em auto;
+      font-family: sans-serif;
+    }
+    h1 {
+      font-size: 1.2em;
+      margin-bottom: 0.5em;
+    }
+    .section {
+      margin-bottom: 1.5em;
+      padding: 1em;
+      border: 1px solid #ccc;
+    }
+    .file-input-box {
+      margin: 0.5em 0;
+    }
+    textarea {
+      width: 100%;
+      height: 100px;
+      margin-bottom: 1em;
+      display: block;
+    }
+    button {
+      padding: 0.5em 1em;
+      cursor: pointer;
+      margin-top: 1em;
+      display: inline-block;
+    }
+    .template-container {
+      background-color: #f8f8f8;
+      padding: 1em;
+      margin-bottom: 1em;
+      border: 1px solid #ddd;
+      white-space: pre-wrap;
+    }
+    .result-box {
+      white-space: pre-wrap;  /* 改行を保持 */
+      border: 1px solid #ddd;
+      padding: 1em;
+      margin-top: 1em;
+    }
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>Excel/CSVからプロンプト生成</h1>
+
+  <!-- 1) 入力ファイルを選択する部分 (Excel/CSV) -->
+  <div class="section">
+    <h2>Excel or CSVファイルを選択</h2>
+    <input type="file" id="inputFile" accept=".csv, .xlsx, .xls" />
+    <p>
+      * <strong>Prompt_Format</strong> 列と、それ以外の列 (Text1, Text2, ...) を持つファイルをアップロードすると、  
+      その内容をもとに、下に動的にテキストボックスが作成されます。
+    </p>
+    <p>
+      * 最初の行 (row=0) のみを使用します。
+    </p>
+  </div>
+
+  <!-- 2) 読み込み結果( Prompt_Format など )で動的に生成されるセクション -->
+  <div class="section hidden" id="generatedSection">
+    <h2>生成された入力欄</h2>
+    <!-- Prompt_Format の内容表示 -->
+    <div class="template-container" id="promptFormatDiv"></div>
+
+    <!-- テキスト列を動的に追加する要素 -->
+    <div id="textFieldsContainer"></div>
+
+    <!-- 生成ボタン & 結果表示-->
+    <button id="generateButton">プロンプト作成 & クリップボードにコピー</button>
+    <div class="result-box hidden" id="resultPrompt"></div>
+  </div>
+
+  <script>
+    document.getElementById("inputFile").addEventListener("change", async (event) => {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const fileName = file.name.toLowerCase();
+      let dataObj;
+
+      if (fileName.endsWith(".csv")) {
+        dataObj = await parseCsvFile(file);
+      } else if (fileName.endsWith(".xlsx") || fileName.endsWith(".xls")) {
+        dataObj = await parseExcelFile(file);
+      } else {
+        alert("サポート外のファイル形式です。CSV または Excel(.xlsx/.xls) を指定してください。");
+        return;
+      }
+
+      if (!dataObj || dataObj.length === 0) {
+        alert("ファイルが空か、読み込みに失敗しました。");
+        return;
+      }
+      const row = dataObj[0];
+
+      if (!("Prompt_Format" in row)) {
+        alert("Error: 'Prompt_Format' 列が見つかりません。ファイルに 'Prompt_Format' 列を含めてください。");
+        return;
+      }
+
+      const promptFormat = row["Prompt_Format"];
+
+      const textCols = Object.keys(row).filter((col) => col !== "Prompt_Format");
+
+      generateDynamicForm(promptFormat, textCols);
+    });
+
+    async function parseCsvFile(file) {
+      return new Promise((resolve, reject) => {
+        Papa.parse(file, {
+          header: true,
+          skipEmptyLines: true,
+          complete: function(results) {
+            if (results.errors && results.errors.length > 0) {
+              reject(results.errors);
+            } else {
+              resolve(results.data);
+            }
+          },
+          error: function(err) {
+            reject(err);
+          }
+        });
+      });
+    }
+
+    async function parseExcelFile(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          try {
+            const data = new Uint8Array(e.target.result);
+            const workbook = XLSX.read(data, { type: "array" });
+            const sheetName = workbook.SheetNames[0];
+            const worksheet = workbook.Sheets[sheetName];
+            const jsonData = XLSX.utils.sheet_to_json(worksheet, { defval: "" });
+            resolve(jsonData);
+          } catch (ex) {
+            reject(ex);
+          }
+        };
+        reader.onerror = function(err) {
+          reject(err);
+        };
+        reader.readAsArrayBuffer(file);
+      });
+    }
+
+    function generateDynamicForm(promptFormat, textCols) {
+      document.getElementById("generatedSection").classList.remove("hidden");
+
+      const promptFormatDiv = document.getElementById("promptFormatDiv");
+      promptFormatDiv.textContent = promptFormat;
+
+      const container = document.getElementById("textFieldsContainer");
+      container.innerHTML = "";
+
+      textCols.forEach((col) => {
+        const section = document.createElement("div");
+        const label = col === "Text1" ? "議事録フォーマット" : col === "Text2" ? "トランスクリプト" : col;
+        section.innerHTML = `
+          <h3>${label}</h3>
+          <textarea id="${col}Input" placeholder="${label}"></textarea>
+          <div class="file-input-box">
+            <input type="file" id="${col}FileInput" />
+          </div>
+        `;
+        container.appendChild(section);
+      });
+
+      textCols.forEach((col) => {
+        const fileInput = document.getElementById(col + "FileInput");
+        fileInput.addEventListener("change", (evt) => {
+          const upFile = evt.target.files[0];
+          if (!upFile) return;
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            document.getElementById(col + "Input").value = e.target.result;
+          };
+          reader.readAsText(upFile);
+        });
+      });
+    }
+
+    document.getElementById("generateButton").addEventListener("click", () => {
+      const promptFormat = document.getElementById("promptFormatDiv").textContent;
+      const container = document.getElementById("textFieldsContainer");
+      const textareas = container.querySelectorAll("textarea");
+
+      let promptText = promptFormat + "\n\n";
+
+      textareas.forEach((ta) => {
+        const colName = ta.id.replace("Input", "");
+        promptText += `~~~ ${colName}\n${ta.value}\n~~~\n\n`;
+      });
+
+      navigator.clipboard.writeText(promptText)
+        .then(() => {
+          alert("クリップボードにコピーしました！");
+        })
+        .catch((err) => {
+          alert("コピーに失敗しました: " + err);
+        });
+
+      const resultDiv = document.getElementById("resultPrompt");
+      resultDiv.textContent = promptText;
+      resultDiv.classList.remove("hidden");
+    });
+  </script>
+</body>
+</html>

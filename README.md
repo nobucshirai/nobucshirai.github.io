@@ -1,6 +1,6 @@
 # Nobu C. Shirai's GitHub Pages Repository
 
-このリポジトリは、生成AIを活用するためのツールを集めたWebサイトです。
+このリポジトリは、生成AIを活用したツールのコレクションを含むWebサイトです。各ツールは使いやすさを重視して設計されており、特に議事録作成やプロンプト生成を効率化することを目的としています。
 
 ## ファイル構成
 ### `index.html`
@@ -43,6 +43,14 @@
 2. **GitHub Pagesでホスト**:
    - このリポジトリをGitHub Pagesでホストし、URLにアクセスすることで利用可能になります。
    - 例: `https://nobucshirai.github.io/`
+
+## ライセンス
+このリポジトリは [Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/deed.ja) ライセンスの下で公開されています。
+
+- **概要**:
+  - 商用利用、改変、再配布が可能です。
+  - 利用する際は、適切なクレジット（著作者名やライセンスリンクなど）を表示してください。
+- 詳細は [ライセンスの公式ページ](https://creativecommons.org/licenses/by/4.0/deed.ja) をご覧ください。
 
 ---
 © 2025 Nobu C. Shirai

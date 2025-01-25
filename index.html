@@ -1,6 +1,73 @@
-# Nobu C. Shirai
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tool Index</title>
+  <style>
+    body {
+      max-width: 800px;
+      margin: 0 auto;
+      font-family: sans-serif;
+      line-height: 1.6;
+    }
+    h1 {
+      font-size: 2em;
+      margin-top: 1em;
+    }
+    h2 {
+      font-size: 1.5em;
+      margin-top: 1em;
+    }
+    p {
+      margin-bottom: 1em;
+    }
+    a {
+      color: blue;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    .tool {
+      margin-bottom: 2em;
+      padding: 1em;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background-color: #f9f9f9;
+    }
+  </style>
+</head>
+<body>
+  <h1>ツール一覧</h1>
+  <p>以下は、このリポジトリで利用可能なツールの一覧です。各ツールの説明とリンクが記載されています。</p>
 
-## Research
+  <div class="tool">
+    <h2><a href="generate-prompt-helper.html">Excel/CSV から HTML生成</a></h2>
+    <p>
+      このツールは、ExcelやCSVファイルから指定されたフォーマットに基づいてHTMLプロンプトを動的に生成する機能を提供します。<br>
+      <strong>主な機能:</strong>
+    </p>
+    <ul>
+      <li>ExcelまたはCSVファイルを読み込み、フォーマットに基づいてプロンプトを生成。</li>
+      <li>ファイル内の列名に基づき、入力欄を動的に作成。</li>
+      <li>生成されたプロンプトをクリップボードにコピー可能。</li>
+    </ul>
+    <p>使用例として、リポジトリには <code>prompt-helper-tool.csv</code> が含まれています。このCSVファイルを使って、<a href="prompt-helper-tool.html">プロンプト作成補助ツール</a>用の入力を生成することができます。</p>
+  </div>
 
-## Lecture
+  <div class="tool">
+    <h2><a href="prompt-helper-tool.html">プロンプト作成補助ツール</a></h2>
+    <p>
+      このツールは、指定された議事録フォーマットとトランスクリプトを基に、整形された議事録を作成するプロンプトを生成します。<br>
+      <strong>主な機能:</strong>
+    </p>
+    <ul>
+      <li>議事録フォーマットとトランスクリプトを入力またはファイルから読み込み。</li>
+      <li>プロンプトを生成し、クリップボードにコピー可能。</li>
+      <li>生成されたプロンプトを画面上に表示。</li>
+    </ul>
+  </div>
 
+</body>
+</html>

@@ -46,9 +46,10 @@
   <div class="template-container">I would like to add some additional specifications below.</div>
   <label><input type="checkbox" id="helpOption" checked /> Add a help option using `argparse`.</label>
   <label><input type="checkbox" id="docstrings" checked /> Add docstrings and type hints.</label>
-  <label><input type="checkbox" id="txtArgument" /> Accept a TXT file as an argument of the script without an option flag.</label>
+  <label><input type="checkbox" id="inputFileArgument" checked /> Accept input files as arguments of the script without any option flag.</label>
   <label><input type="checkbox" id="outputFilename" checked /> Add an option to specify the output filename.</label>
-  <label><input type="checkbox" id="stdoutOutput" checked /> Output the text to stdout if there is no specified output filename.</label>
+  <label><input type="checkbox" id="outputFilenameSuffix" checked /> Default filename should have the same basename as the input file.</label>
+  <label><input type="checkbox" id="stdoutOutput" /> Output the text to stdout if there is no specified output filename.</label>
   <label><input type="checkbox" id="filenameSuggestions" checked /> Suggest some potential filenames for the script.</label>
   <label><input type="checkbox" id="overwritePrompt" checked /> Ask "(y)es/(n)o" before overwriting an existing file (default: no).</label>
   <label><input type="checkbox" id="shebang" checked /> Add the following shebang:<br>
@@ -72,11 +73,14 @@
     if (document.getElementById("docstrings").checked) {
       promptItems.push("- Add docstrings and type hints.");
     }
-    if (document.getElementById("txtArgument").checked) {
-      promptItems.push("- Accept a TXT file as an argument of the script without an option flag.");
+    if (document.getElementById("inputFileArgument").checked) {
+      promptItems.push("- Accept input files as arguments of the script without any option flag.");
     }
     if (document.getElementById("outputFilename").checked) {
       promptItems.push("- Add an option to specify the output filename.");
+    }
+    if (document.getElementById("outputFilenameSuffix").checked) {
+      promptItems.push("- Default filename should have the same basename as the input file.");
     }
     if (document.getElementById("stdoutOutput").checked) {
       promptItems.push("- Output the text to stdout if there is no specified output filename.");

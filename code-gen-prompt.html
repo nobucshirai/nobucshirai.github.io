@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>CLIツール生成用プロンプト作成補助</title>
+  <title>CLI Tool Prompt Generator</title>
   <style>
     body {
       max-width: 800px;
@@ -38,8 +38,8 @@
   </style>
 </head>
 <body>
-<h1>CLIツール生成用プロンプト作成補助</h1>
-<textarea id="textbox" placeholder="プロンプトを入力してください">Please generate a python3 script to</textarea>
+<h1>CLI Tool Prompt Generator</h1>
+<textarea id="textbox" placeholder="Enter your prompt here">Please generate a python3 script to</textarea>
 
 <div class="checkbox-container">
 
@@ -56,13 +56,13 @@
     <code>#!/usr/bin/env python3</code></label>
 </div>
 
-<button id="generateButton">プロンプト作成 &amp; クリップボードにコピー</button>
+<button id="generateButton">Generate Prompt &amp; Copy to Clipboard</button>
 
 <div class="result-box" id="resultPrompt" hidden></div>
 
 <script>
   document.getElementById("generateButton").addEventListener("click", () => {
-    // チェックされた項目だけをプロンプトに含める
+    // Include only the checked items in the prompt
     const promptItems = [];
     const textboxValue = document.getElementById("textbox").value;
     promptItems.push(textboxValue);
@@ -97,16 +97,16 @@
 
     const prompt = promptItems.join("\n");
 
-    // クリップボードにコピー
+    // Copy to clipboard
     navigator.clipboard.writeText(prompt)
       .then(() => {
-        alert("クリップボードにコピーしました！");
+        alert("Copied to clipboard!");
       })
       .catch((err) => {
-        alert("コピーに失敗しました: " + err);
+        alert("Failed to copy: " + err);
       });
 
-    // 結果を画面に表示
+    // Display result on screen
     const resultPromptDiv = document.getElementById("resultPrompt");
     resultPromptDiv.hidden = false;
     resultPromptDiv.textContent = prompt;

@@ -18,6 +18,12 @@
       height: 100px;
       margin-bottom: 1em;
     }
+    .inline-input {
+      width: 3em;
+      padding: 2px;
+      font-size: 1em;
+      text-align: center;
+    }
     button {
       padding: 0.5em 1em;
       cursor: pointer;
@@ -42,19 +48,19 @@
 </head>
 <body>
 <div id="promptContent">
-<h1>翻訳プロンプト（日本語→英語）</h1>
-<p class="prompt-item">
-  以下の文章を直訳から始めて
-  <input type="number" class="inline-input" id="textbox" placeholder="ステップ数" value="10" min="1">
-  ステップで自然な英語にして下さい。
-</p>
-<pre><code>
+  <h1>翻訳プロンプト（日本語→英語）</h1>
+  <p class="prompt-item">
+    以下の文章を直訳から始めて
+    <input type="number" class="inline-input" id="textbox" placeholder="ステップ数" value="10" min="1">
+    ステップで自然な英語にして下さい。
+  </p>
+  <pre><code>
 ~~~
-</code></pre>
-<textarea class="prompt-item" id="textbox" placeholder="日本語"></textarea>
-<pre><code>
+  </code></pre>
+  <textarea class="prompt-item" id="textbox" placeholder="日本語"></textarea>
+  <pre><code>
 ~~~
-</code></pre>
+  </code></pre>
 </div>
 
 <button id="generateButton">Generate Prompt &amp; Copy to Clipboard</button>
@@ -71,10 +77,29 @@
       reader.readAsText(file);
     });
   }
+  
+  // Helper: get combined text from an element.
+  // For input elements (except file inputs), use their value.
+  // Also, collapse extra whitespace so that the number stays inline.
+  function getElementText(el) {
+    let text = "";
+    el.childNodes.forEach(node => {
+      if (
+        node.nodeType === Node.ELEMENT_NODE &&
+        node.tagName.toLowerCase() === "input" &&
+        node.type !== "file"
+      ) {
+        text += node.value;
+      } else {
+        text += node.textContent;
+      }
+    });
+    return text.replace(/\s+/g, " ").trim();
+  }
 
   document.getElementById("generateButton").addEventListener("click", async () => {
     const promptItems = [];
-    // Select all prompt items, verbatim code blocks, and file inputs.
+    // Note: We removed '.inline-input' from the query selector so that the input is processed as part of its parent.
     const elements = document.querySelectorAll("#promptContent .prompt-item, pre code, input[type='file']");
     
     // Process each element in document order.
@@ -83,7 +108,8 @@
       if (tag === "textarea") {
         promptItems.push(el.value);
       } else if (tag === "p") {
-        promptItems.push(el.textContent);
+        // Use our helper so that any inline input values (like the number) are inserted inline.
+        promptItems.push(getElementText(el));
       } else if (tag === "label") {
         const checkbox = el.querySelector("input[type='checkbox']");
         if (checkbox && checkbox.checked) {
@@ -92,7 +118,6 @@
       } else if (tag === "code") {
         promptItems.push(el.textContent);
       } else if (tag === "input" && el.type === "file") {
-        // If a file is selected, read its content asynchronously.
         if (el.files && el.files.length > 0) {
           try {
             const fileContent = await readFileAsText(el.files[0]);
@@ -106,7 +131,7 @@
     
     const prompt = promptItems.join("\n");
     
-    // Copy to clipboard.
+    // Copy the prompt to the clipboard.
     navigator.clipboard.writeText(prompt)
       .then(() => {
         alert("Copied to clipboard!");

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>フランス語単語クイズ</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+    #quiz-container {
+      background-color: #fff;
+      padding: 20px 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      width: 90%;
+      max-width: 600px;
+      margin-top: 40px;
+    }
+    h1 {
+      text-align: center;
+    }
+    #progress {
+      margin-bottom: 20px;
+      font-size: 1.1em;
+      text-align: center;
+    }
+    #question {
+      margin-bottom: 20px;
+      font-size: 1.2em;
+      font-weight: bold;
+      text-align: center;
+    }
+    #choices {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .choice-button {
+      background-color: #007BFF;
+      color: #fff;
+      border: none;
+      padding: 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1em;
+      transition: background-color 0.3s;
+    }
+    .choice-button:hover {
+      background-color: #0056b3;
+    }
+    .choice-button.correct {
+      background-color: #28a745 !important;
+    }
+    .choice-button.incorrect {
+      background-color: #dc3545 !important;
+    }
+    #next-button, #try-again-button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 1em;
+      cursor: pointer;
+      border: none;
+      border-radius: 4px;
+      background-color: #17a2b8;
+      color: #fff;
+      display: block;
+      width: 100%;
+    }
+    #feedback {
+      margin-top: 10px;
+      font-size: 1.1em;
+      font-weight: bold;
+      text-align: center;
+    }
+    #result {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 1.3em;
+      font-weight: bold;
+    }
+    #filenames {
+      text-align: center;
+      margin: 20px 0;
+      font-size: 0.9em;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <div id="quiz-container">
+    <h1>フランス語単語クイズ</h1>
+    <div id="progress"></div>
+    <div id="question"></div>
+    <div id="choices"></div>
+    <div id="feedback"></div>
+    <button id="next-button" style="display:none;">Next</button>
+    <div id="result" style="display:none;"></div>
+    <button id="try-again-button" style="display:none;">Try Again</button>
+  </div>
+
+  <div id="filenames">
+    Suggested Filenames: <code>french_vocab_quiz.html</code>, <code>french_quiz_app.html</code>, <code>vocab_quiz.html</code>
+  </div>
+
+  <script>
+    // Vocabulary data (simulating CSV file content)
+    const vocabulary = [
+      { french: "être",       japanese: "～である (be)" },
+      { french: "je suis",    japanese: "私はである (I am)" },
+      { french: "tu es",      japanese: "君はである (you are; sg)" },
+      { french: "il est",     japanese: "彼はである (he is)" },
+      { french: "elle est",   japanese: "彼女はである (she is)" },
+      { french: "nous sommes", japanese: "我々はである (we are)" },
+      { french: "vous êtes",  japanese: "あなたはである (you are; pl)" },
+      { french: "ils sont",   japanese: "彼らはである (they are; m)" },
+      { french: "elles sont", japanese: "彼女らはである (they are; f)" },
+      { french: "avoir",      japanese: "持つ (have)" },
+      { french: "j'ai",       japanese: "私は持っている (I have)" },
+      { french: "tu as",      japanese: "君は持っている (you have; sg)" },
+      { french: "il a",       japanese: "彼は持っている (he has)" },
+      { french: "elle a",     japanese: "彼女は持っている (she has)" },
+      { french: "nous avons", japanese: "我々は持っている (we have)" },
+      { french: "vous avez",  japanese: "あなたは持っている (you have; pl)" },
+      { french: "ils ont",    japanese: "彼らは持っている (they have; m)" },
+      { french: "elles ont",  japanese: "彼女らは持っている (they have; f)" }
+    ];
+
+    // Quiz configuration
+    const totalQuestions = 10;  // Number of questions per quiz
+    let quizQuestions = [];
+    let currentQuestionIndex = 0;
+    let score = 0;
+
+    // Utility: Fisher-Yates shuffle
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+
+    // Initialize quiz: shuffle vocabulary and select a subset
+    function initializeQuiz() {
+      const vocabCopy = [...vocabulary];
+      shuffle(vocabCopy);
+      quizQuestions = vocabCopy.slice(0, Math.min(totalQuestions, vocabCopy.length));
+      currentQuestionIndex = 0;
+      score = 0;
+
+      // Reset UI: show quiz elements and hide result elements
+      document.getElementById("progress").style.display = "block";
+      document.getElementById("question").style.display = "block";
+      document.getElementById("choices").style.display = "flex";
+      document.getElementById("feedback").style.display = "block";
+      document.getElementById("next-button").style.display = "none";
+      document.getElementById("result").style.display = "none";
+      document.getElementById("try-again-button").style.display = "none";
+
+      showQuestion();
+    }
+
+    // Display current question and multiple-choice options
+    function showQuestion() {
+      const questionData = quizQuestions[currentQuestionIndex];
+      document.getElementById("progress").innerText =
+        "Question " + (currentQuestionIndex + 1) + " of " + quizQuestions.length;
+      document.getElementById("question").innerText = questionData.japanese;
+      document.getElementById("feedback").innerText = "";
+      document.getElementById("next-button").style.display = "none";
+
+      // Prepare choices: correct answer + three distractors
+      const choices = [];
+      choices.push(questionData.french);
+      const incorrectOptions = vocabulary.filter(item => item.french !== questionData.french);
+      shuffle(incorrectOptions);
+      for (let i = 0; i < 3 && i < incorrectOptions.length; i++) {
+        choices.push(incorrectOptions[i].french);
+      }
+      shuffle(choices);
+
+      // Render choices as buttons
+      const choicesContainer = document.getElementById("choices");
+      choicesContainer.innerHTML = "";
+      choices.forEach(choice => {
+        const button = document.createElement("button");
+        button.innerText = choice;
+        button.className = "choice-button";
+        button.onclick = () => selectAnswer(button, questionData.french);
+        choicesContainer.appendChild(button);
+      });
+    }
+
+    // Handle answer selection
+    function selectAnswer(button, correctAnswer) {
+      // Disable all choice buttons
+      const buttons = document.querySelectorAll(".choice-button");
+      buttons.forEach(btn => btn.disabled = true);
+
+      if (button.innerText === correctAnswer) {
+        button.classList.add("correct");
+        document.getElementById("feedback").innerText = "正解です！";
+        score++;
+      } else {
+        button.classList.add("incorrect");
+        document.getElementById("feedback").innerText =
+          "不正解です。正解は '" + correctAnswer + "' です。";
+        // Highlight the correct answer button
+        buttons.forEach(btn => {
+          if (btn.innerText === correctAnswer) {
+            btn.classList.add("correct");
+          }
+        });
+      }
+      document.getElementById("next-button").style.display = "block";
+    }
+
+    // Move to the next question or show final results
+    document.getElementById("next-button").addEventListener("click", () => {
+      currentQuestionIndex++;
+      if (currentQuestionIndex < quizQuestions.length) {
+        showQuestion();
+      } else {
+        showResults();
+      }
+    });
+
+    // Display final results and show Try Again option
+    function showResults() {
+      // Hide quiz question elements
+      document.getElementById("progress").style.display = "none";
+      document.getElementById("question").style.display = "none";
+      document.getElementById("choices").style.display = "none";
+      document.getElementById("feedback").style.display = "none";
+      document.getElementById("next-button").style.display = "none";
+
+      // Show final result and total points
+      const resultDiv = document.getElementById("result");
+      resultDiv.style.display = "block";
+      resultDiv.innerHTML = "<p>結果: " + score + " 問正解 / " + quizQuestions.length + " 問中</p>" +
+                            "<p>Total Points: " + score + " points</p>";
+
+      // Show the Try Again button
+      document.getElementById("try-again-button").style.display = "block";
+    }
+
+    // Restart the quiz when Try Again is clicked
+    document.getElementById("try-again-button").addEventListener("click", () => {
+      // Reset display of quiz elements
+      document.getElementById("progress").style.display = "block";
+      document.getElementById("question").style.display = "block";
+      document.getElementById("choices").style.display = "flex";
+      document.getElementById("feedback").style.display = "block";
+      document.getElementById("result").style.display = "none";
+      document.getElementById("try-again-button").style.display = "none";
+      initializeQuiz();
+    });
+
+    // Start the quiz when the page loads
+    window.onload = initializeQuiz;
+  </script>
+</body>
+</html>

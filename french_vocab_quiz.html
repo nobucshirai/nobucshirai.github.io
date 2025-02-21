@@ -100,6 +100,8 @@
     <div id="question"></div>
     <div id="choices"></div>
     <div id="feedback"></div>
+    <!-- Audio element to play the answer -->
+    <audio id="audioPlayer" controls style="display: none;"></audio>
     <button id="next-button" style="display:none;">Next</button>
     <div id="result" style="display:none;"></div>
     <button id="try-again-button" style="display:none;">Try Again</button>
@@ -126,6 +128,28 @@
       { french: "vous avez",  japanese: "あなたは持っている (you have; pl)" },
       { french: "ils ont",    japanese: "彼らは持っている (they have; m)" },
       { french: "elles ont",  japanese: "彼女らは持っている (they have; f)" }
+    ];
+
+    // Audio file list corresponding to the vocabulary order
+    const audioFiles = [
+      "audio_files/01_etre.mp3",
+      "audio_files/02_je_suis.mp3",
+      "audio_files/03_tu_es.mp3",
+      "audio_files/04_il_est.mp3",
+      "audio_files/05_elle_est.mp3",
+      "audio_files/06_nous_sommes.mp3",
+      "audio_files/07_vous_etes.mp3",
+      "audio_files/08_ils_sont.mp3",
+      "audio_files/09_elles_sont.mp3",
+      "audio_files/10_avoir.mp3",
+      "audio_files/11_j_ai.mp3",
+      "audio_files/12_tu_as.mp3",
+      "audio_files/13_il_a.mp3",
+      "audio_files/14_elle_a.mp3",
+      "audio_files/15_nous_avons.mp3",
+      "audio_files/16_vous_avez.mp3",
+      "audio_files/17_ils_ont.mp3",
+      "audio_files/18_elles_ont.mp3"
     ];
 
     // Quiz configuration
@@ -164,6 +188,12 @@
 
     // Display current question and multiple-choice options
     function showQuestion() {
+      // Reset the audio player for the new question
+      const audioPlayer = document.getElementById("audioPlayer");
+      audioPlayer.pause();
+      audioPlayer.currentTime = 0;
+      audioPlayer.style.display = "none";
+
       const questionData = quizQuestions[currentQuestionIndex];
       document.getElementById("progress").innerText =
         "Question " + (currentQuestionIndex + 1) + " of " + quizQuestions.length;
@@ -193,7 +223,7 @@
       });
     }
 
-    // Handle answer selection
+    // Handle answer selection and play the corresponding audio
     function selectAnswer(button, correctAnswer) {
       // Disable all choice buttons
       const buttons = document.querySelectorAll(".choice-button");
@@ -214,6 +244,18 @@
           }
         });
       }
+      
+      // Play the audio for the correct answer
+      const currentQuestionData = quizQuestions[currentQuestionIndex];
+      const vocabIndex = vocabulary.findIndex(item => item.french === currentQuestionData.french);
+      if (vocabIndex !== -1) {
+        const audioFile = audioFiles[vocabIndex];
+        const audioPlayer = document.getElementById("audioPlayer");
+        audioPlayer.src = audioFile;
+        audioPlayer.style.display = "block";
+        audioPlayer.play();
+      }
+      
       document.getElementById("next-button").style.display = "block";
     }
 

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tool Index</title>
+  <title>生成AI活用ツール一覧</title>
   <style>
     body {
       max-width: 800px;
@@ -43,35 +43,57 @@
   <p>以下は、このリポジトリで利用可能なツールの一覧です。各ツールの説明とリンクが記載されています。</p>
 
   <div class="tool">
-    <h2><a href="prompt-helper-tool.html">プロンプト作成補助ツール</a></h2>
+    <h2><a href="minuite_making.html">会議要約用プロンプトテンプレート</a></h2>
     <p>
-      このツールは、指定された議事録フォーマットとトランスクリプトを基に、整形された議事録を作成するプロンプトを生成します。<br>
-      <strong>主な機能:</strong>
+      このツールは、会議の参加者一覧とトランスクリプトを基に、会議要約用のプロンプトを生成するテンプレートを提供します。概要とネクストアクションの提示をサポートします。
     </p>
-    <ul>
-      <li>議事録フォーマットとトランスクリプトを入力またはファイルから読み込み。</li>
-      <li>プロンプトを生成し、クリップボードにコピー可能。</li>
-      <li>生成されたプロンプトを画面上に表示。</li>
-    </ul>
   </div>
 
   <div class="tool">
-    <h2><a href="generate-prompt-helper.html">CSV/Excel から HTML生成</a></h2>
+    <h2><a href="jp2en_translator_mod.html">翻訳プロンプト（日本語→英語）</a></h2>
     <p>
-    このツールは、CSVやExcelファイルから自作の「プロンプト作成補助ツール」を生成する機能を提供します。<br>
-    <strong>主な機能:</strong>
+      このツールは、日本語の文章を英語に翻訳するためのプロンプトを生成します。直訳から始め、段階的に自然な英語表現へと改善します。
     </p>
-    <ul>
-    <li>CSVまたはExcelファイルを読み込み「プロンプト作成補助ツール」を生成。</li>
-    </ul>
+  </div>
+
+  <div class="tool">
+    <h2><a href="natural_phrasing_guide.html">Natural Phrasing Guide</a></h2>
     <p>
-      <a href="generate-prompt-helper.html">HTML生成ツール</a>に <a href="https://raw.githubusercontent.com/nobucshirai/nobucshirai.github.io/refs/heads/main/prompt-helper-tool.csv" target="_blank"><code>prompt-helper-tool.csv</code></a> を入力すると、<a href="prompt-helper-tool.html">プロンプト作成補助ツール</a>が生成されます。
+      This tool provides suggestions for more natural phrasing in conversation transcripts, helping improve clarity and flow.
+    </p>
+  </div>
+
+  <div class="tool">
+    <h2><a href="code-gen-prompt.html">CLI Tool Prompt Generator</a></h2>
+    <p>
+      This tool helps you generate command-line interface prompts for creating Python3 scripts with various specifications.
+    </p>
+  </div>
+
+  <div class="tool">
+    <h2><a href="sentence_refinement.html">Sentence Refinement</a></h2>
+    <p>
+      This tool reviews and refines sentences through iterative steps, providing suggestions to improve clarity and style.
+    </p>
+  </div>
+
+  <div class="tool">
+    <h2><a href="prompt_template_parser.html">Prompt Template Parser</a></h2>
+    <p>
+      This tool converts extended Markdown with custom syntax into complete HTML prompt templates. It supports inline inputs, checkboxes, and file uploads.
+    </p>
+  </div>
+
+  <div class="tool">
+    <h2><a href="french_vocab_quiz.html">フランス語単語クイズ</a></h2>
+    <p>
+      このツールは、フランス語の単語をクイズ形式で学習するためのツールです。正しいフランス語の単語を選択することで、語彙力の向上をサポートします。
     </p>
   </div>
 
   <footer style="margin-top: 2em; text-align: center; font-size: 0.9em; color: #666;">
     <p>Nobu C. Shirai</p>
-    <p>Last modified: 2025-01-25 11:42 JST</p>
+    <p>Last modified: 2025-02-26 11:42 JST</p>
   </footer>
 </body>
 </html>

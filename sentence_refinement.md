@@ -2,7 +2,7 @@
 
 # Sentence Refinement
 
-Please review and refine the following sentences in <<10>> iterative steps:
+Please review and refine the following sentences in <<5>> iterative steps:
 
 ~~~
 [[Sentences:]]

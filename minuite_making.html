@@ -31,6 +31,12 @@ label {
       display: block;
       margin-bottom: 0.5em;
     }
+.inline-input {
+      width: 3em;
+      padding: 2px;
+      font-size: 1em;
+      text-align: center;
+    }
 </style>
 </head>
 <body>
@@ -38,7 +44,7 @@ label {
 <h1>会議要約用プロンプトテンプレート</h1>
 <p class="prompt-item">あなたは、最高の要約専門家として対応してください。</p>
 <p class="prompt-item">ソースは、会議に関する、参加者一覧、トランスクリプトです。</p>
-<p class="prompt-item">次の項目ごとに600文字程度の概要を示し、最後にネクストアクションを示してください。</p>
+<p class="prompt-item">次の項目ごとに<input type="number" class="inline-input" value="600" min="1" />文字程度の概要を示し、最後にネクストアクションを示してください。</p>
 <p class="prompt-item">＃1 <input type="text" class="inline-text" placeholder="入力して下さい" value="" />について</p>
 <div class="checkbox-container">
 <label class="prompt-item"><input type="checkbox" id="2inputtypetextclassinlinetextplaceholder入力して下さいvalueについて" checked /> ＃2 <input type="text" class="inline-text" placeholder="入力して下さい" value="" />について</label>
@@ -85,7 +91,7 @@ label {
     let text = "";
     el.childNodes.forEach(node => {
       if (node.nodeType === Node.ELEMENT_NODE && node.tagName.toLowerCase() === "input") {
-        if (node.type === "text") {
+        if (node.type === "text" || node.type === "number") {
           text += node.value;
         }
       } else {

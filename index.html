@@ -5,147 +5,150 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>生成AI活用ツール一覧</title>
   <style>
+    /* --- 基本レイアウト --- */
+    :root {
+      --max-width: 800px;
+      --card-bg: #f9f9f9;
+      --card-border: #ccc;
+      --accent: royalblue;
+    }
     body {
-      max-width: 800px;
+      max-width: var(--max-width);
       margin: 0 auto;
       font-family: sans-serif;
       line-height: 1.6;
+      padding: 0 1rem;
     }
-    h1 {
-      font-size: 2em;
-      margin-top: 0.5em;
+    header, footer { text-align: center; }
+    nav ul {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .5rem;
+      list-style: none;
+      padding: 0;
+      justify-content: center;
+      margin: .5rem 0 1.5rem;
     }
-    h2 {
-      font-size: 1.5em;
-      margin-top: 0em;
-    }
-    p {
-      margin-bottom: 1em;
-    }
-    a {
-      color: blue;
-      text-decoration: none;
-    }
-    a:hover {
-      text-decoration: underline;
-    }
-    .tool {
-      margin-bottom: 2em;
-      padding: 1em;
-      border: 1px solid #ccc;
+    nav a { color: var(--accent); text-decoration: none; font-weight: bold; }
+    nav a:hover { text-decoration: underline; }
+
+    /* --- 見出し --- */
+    h1 { font-size: 2em; margin: .5em 0 .3em; }
+    h2 { font-size: 1.6em; margin: 2.2em 0 .4em; border-bottom: 1px solid #ddd; padding-bottom: .2em; }
+    h3 { font-size: 1.2em; margin: 0; }
+
+    /* --- ツールカード --- */
+    .tool-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 1.2em; }
+    .tool-card {
+      border: 1px solid var(--card-border);
       border-radius: 8px;
-      background-color: #f9f9f9;
+      background: var(--card-bg);
+      padding: 1em;
     }
+    .tool-card a { color: var(--accent); text-decoration: none; }
+    .tool-card a:hover { text-decoration: underline; }
+    .tool-card p { margin: .6em 0 0; }
+
+    /* --- フッター --- */
+    footer { margin: 3em 0 2em; font-size: .9em; color: #666; }
   </style>
 </head>
 <body>
-  <h1>生成AI活用ツール一覧</h1>
-  <p>以下は、このリポジトリで利用可能なツールの一覧です。各ツールの説明とリンクが記載されています。</p>
+  <!-- ===== ヘッダー&ナビゲーション ===== -->
+  <header>
+    <h1>生成AI活用ツール一覧</h1>
+    <p>このリポジトリで利用可能なツールをカテゴリ別にまとめています。</p>
+    <nav>
+      <ul>
+        <li><a href="#italian">イタリア語クイズ</a></li>
+        <li><a href="#french">フランス語クイズ</a></li>
+        <li><a href="#utilities">その他ツール</a></li>
+      </ul>
+    </nav>
+  </header>
 
-  <!-- ---- 既存ツール ---- -->
-  <div class="tool">
-    <h2><a href="minuite_making.html">会議要約用プロンプトテンプレート</a></h2>
-    <p>
-      このツールは、会議の参加者一覧とトランスクリプトを基に、会議要約用のプロンプトを生成するテンプレートを提供します。概要とネクストアクションの提示をサポートします。
-    </p>
-  </div>
+  <main>
+    <!-- ===== Italian Vocabulary Quizzes ===== -->
+    <section id="italian">
+      <h2>イタリア語ボキャブラリークイズ</h2>
+      <ul class="tool-list">
+        <li class="tool-card">
+          <h3><a href="vocab_it_basic_verbs_quiz1.html">イタリア語「基本動詞」単語クイズ</a></h3>
+          <p>イタリア語の基本動詞 <code>essere / avere</code> などをクイズで学習できます。音声で活用形を確認しましょう。</p>
+        </li>
+        <li class="tool-card">
+          <h3><a href="vocab_it_greetings_quiz.html">イタリア語「挨拶」単語クイズ</a></h3>
+          <p>あいさつフレーズを中心にしたイタリア語語彙クイズです。旅行前の練習に最適です。</p>
+        </li>
+        <li class="tool-card">
+          <h3><a href="vocab_it_numbers_quiz1.html">イタリア語「数字1–10」単語クイズ</a></h3>
+          <p>イタリア語の数字 1〜10 をクイズ形式で覚えましょう。</p>
+        </li>
+        <li class="tool-card">
+          <h3><a href="vocab_it_numbers_quiz2.html">イタリア語「数字11–20」単語クイズ</a></h3>
+          <p>数字 11〜20 を扱うイタリア語クイズです。さらに数を広げて覚えましょう。</p>
+        </li>
+      </ul>
+    </section>
 
-  <div class="tool">
-    <h2><a href="jp2en_translator_mod.html">翻訳プロンプト（日本語→英語）</a></h2>
-    <p>
-      このツールは、日本語の文章を英語に翻訳するためのプロンプトを生成します。直訳から始め、段階的に自然な英語表現へと改善します。
-    </p>
-  </div>
+    <!-- ===== French Vocabulary Quizzes ===== -->
+    <section id="french">
+      <h2>フランス語ボキャブラリークイズ</h2>
+      <ul class="tool-list">
+        <li class="tool-card">
+          <h3><a href="vocab_fr_basic_verbs_quiz1.html">フランス語「基本動詞」単語クイズ</a></h3>
+          <p>フランス語の基本動詞の活用をクイズ形式で学習できます。音声付でリスニング練習にも最適です。</p>
+        </li>
+        <li class="tool-card">
+          <h3><a href="vocab_fr_greetings_quiz.html">フランス語「挨拶」単語クイズ</a></h3>
+          <p>挨拶表現を中心に学べるフランス語語彙クイズです。発音音声でフレーズを確認しましょう。</p>
+        </li>
+        <li class="tool-card">
+          <h3><a href="vocab_fr_numbers_quiz1.html">フランス語「数字1–10」単語クイズ</a></h3>
+          <p>数字 1〜10 の読み方と綴りを覚えるためのフランス語クイズです。</p>
+        </li>
+        <li class="tool-card">
+          <h3><a href="vocab_fr_numbers_quiz2.html">フランス語「数字11–20」単語クイズ</a></h3>
+          <p>数字 11〜20 を対象としたフランス語語彙クイズ。1–10 をマスターしたら次のステップへ！</p>
+        </li>
+      </ul>
+    </section>
 
-  <div class="tool">
-    <h2><a href="natural_phrasing_guide.html">Natural Phrasing Guide</a></h2>
-    <p>
-      This tool provides suggestions for more natural phrasing in conversation transcripts, helping improve clarity and flow.
-    </p>
-  </div>
+    <!-- ===== その他ツール ===== -->
+    <section id="utilities">
+      <h2>その他ツール</h2>
+      <ul class="tool-list">
+        <li class="tool-card">
+          <h3><a href="minuite_making.html">会議要約用プロンプトテンプレート</a></h3>
+          <p>会議の参加者一覧とトランスクリプトを基に、会議要約用のプロンプトを生成するテンプレートを提供します。</p>
+        </li>
+        <li class="tool-card">
+          <h3><a href="jp2en_translator_mod.html">翻訳プロンプト（日本語→英語）</a></h3>
+          <p>日本語の文章を英語に翻訳するためのプロンプトを生成します。直訳から段階的に自然な英語表現へと改善します。</p>
+        </li>
+        <li class="tool-card">
+          <h3><a href="natural_phrasing_guide.html">Natural Phrasing Guide</a></h3>
+          <p>This tool provides suggestions for more natural phrasing in conversation transcripts, helping improve clarity and flow.</p>
+        </li>
+        <li class="tool-card">
+          <h3><a href="code-gen-prompt.html">CLI Tool Prompt Generator</a></h3>
+          <p>This tool helps you generate command-line interface prompts for creating Python3 scripts with various specifications.</p>
+        </li>
+        <li class="tool-card">
+          <h3><a href="sentence_refinement.html">Sentence Refinement</a></h3>
+          <p>This tool reviews and refines sentences through iterative steps, providing suggestions to improve clarity and style.</p>
+        </li>
+        <li class="tool-card">
+          <h3><a href="prompt_template_parser.html">Prompt Template Parser</a></h3>
+          <p>This tool converts extended Markdown with custom syntax into complete HTML prompt templates.</p>
+        </li>
+      </ul>
+    </section>
+  </main>
 
-  <div class="tool">
-    <h2><a href="code-gen-prompt.html">CLI Tool Prompt Generator</a></h2>
-    <p>
-      This tool helps you generate command-line interface prompts for creating Python3 scripts with various specifications.
-    </p>
-  </div>
-
-  <div class="tool">
-    <h2><a href="sentence_refinement.html">Sentence Refinement</a></h2>
-    <p>
-      This tool reviews and refines sentences through iterative steps, providing suggestions to improve clarity and style.
-    </p>
-  </div>
-
-  <div class="tool">
-    <h2><a href="prompt_template_parser.html">Prompt Template Parser</a></h2>
-    <p>
-      This tool converts extended Markdown with custom syntax into complete HTML prompt templates. It supports inline inputs, checkboxes, and file uploads.
-    </p>
-  </div>
-
-  <!-- ---- Vocabulary Quizzes (French) ---- -->
-  <div class="tool">
-    <h2><a href="vocab_fr_basic_verbs_quiz1.html">フランス語「基本動詞」単語クイズ</a></h2>
-    <p>
-      フランス語の基本動詞の活用をクイズ形式で学習できます。音声付でリスニング練習にも最適です。
-    </p>
-  </div>
-
-  <div class="tool">
-    <h2><a href="vocab_fr_greetings_quiz.html">フランス語「挨拶」単語クイズ</a></h2>
-    <p>
-      挨拶表現を中心に学べるフランス語語彙クイズです。発音音声でフレーズを確認しましょう。
-    </p>
-  </div>
-
-  <div class="tool">
-    <h2><a href="vocab_fr_numbers_quiz1.html">フランス語「数字1–10」単語クイズ</a></h2>
-    <p>
-      数字1〜10の読み方と綴りを覚えるためのフランス語クイズです。
-    </p>
-  </div>
-
-  <div class="tool">
-    <h2><a href="vocab_fr_numbers_quiz2.html">フランス語「数字11–20」単語クイズ</a></h2>
-    <p>
-      数字11〜20を対象としたフランス語語彙クイズ。1–10 をマスターしたら次のステップへ！
-    </p>
-  </div>
-
-  <!-- ---- Vocabulary Quizzes (Italian) ---- -->
-  <div class="tool">
-    <h2><a href="vocab_it_basic_verbs_quiz1.html">イタリア語「基本動詞」単語クイズ</a></h2>
-    <p>
-      イタリア語の基本動詞「essere / avere」などをクイズで学習できます。音声で活用形を確認しましょう。
-    </p>
-  </div>
-
-  <div class="tool">
-    <h2><a href="vocab_it_greetings_quiz.html">イタリア語「挨拶」単語クイズ</a></h2>
-    <p>
-      あいさつフレーズを中心にしたイタリア語語彙クイズです。旅行前の練習に最適です。
-    </p>
-  </div>
-
-  <div class="tool">
-    <h2><a href="vocab_it_numbers_quiz1.html">イタリア語「数字1–10」単語クイズ</a></h2>
-    <p>
-      イタリア語の数字1〜10をクイズ形式で覚えましょう。
-    </p>
-  </div>
-
-  <div class="tool">
-    <h2><a href="vocab_it_numbers_quiz2.html">イタリア語「数字11–20」単語クイズ</a></h2>
-    <p>
-      11〜20 の数字を扱うイタリア語クイズです。さらに数を広げて覚えましょう。
-    </p>
-  </div>
-
-  <footer style="margin-top: 2em; text-align: center; font-size: 0.9em; color: #666;">
+  <footer>
     <p>Nobu C. Shirai</p>
-    <p>Last modified: 2025-04-25 09:00 JST</p>
+    <p>Last modified: 2025-04-25&nbsp;09:00&nbsp;JST</p>
   </footer>
 </body>
 </html>

@@ -1,0 +1,244 @@
+<!-- File: vocab_it_prepositions_quiz1.html -->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>イタリア語「前置詞」単語クイズ1</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+    #quiz-container {
+      background-color: #fff;
+      padding: 20px 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      width: 90%;
+      max-width: 600px;
+      margin-top: 40px;
+    }
+    h1 {
+      text-align: center;
+    }
+    #progress {
+      margin-bottom: 20px;
+      font-size: 1.1em;
+      text-align: center;
+    }
+    #question {
+      margin-bottom: 20px;
+      font-size: 1.2em;
+      font-weight: bold;
+      text-align: center;
+    }
+    #choices {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .choice-button {
+      background-color: #007BFF;
+      color: #fff;
+      border: none;
+      padding: 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1em;
+      transition: background-color 0.3s;
+    }
+    .choice-button:hover {
+      background-color: #0056b3;
+    }
+    .choice-button.correct {
+      background-color: #28a745 !important;
+    }
+    .choice-button.incorrect {
+      background-color: #dc3545 !important;
+    }
+    #next-button, #try-again-button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 1em;
+      cursor: pointer;
+      border: none;
+      border-radius: 4px;
+      background-color: #17a2b8;
+      color: #fff;
+      display: block;
+      width: 100%;
+    }
+    #feedback {
+      margin-top: 10px;
+      font-size: 1.1em;
+      font-weight: bold;
+      text-align: center;
+    }
+    #result {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 1.3em;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div id="quiz-container">
+    <h1>イタリア語「前置詞」単語クイズ1</h1>
+    <div id="progress"></div>
+    <div id="question"></div>
+    <div id="choices"></div>
+    <div id="feedback"></div>
+    <audio id="audioPlayer" controls style="display: none;"></audio>
+    <button id="next-button" style="display:none;">Next</button>
+    <div id="result" style="display:none;"></div>
+    <button id="try-again-button" style="display:none;">Try Again</button>
+  </div>
+
+  <script>
+    // Vocabulary data (前置詞)
+    const vocabulary = [
+      { italian: "di",     japanese: "～の、～から (of, from)" },
+      { italian: "a",      japanese: "～へ、～に (to, at)" },
+      { italian: "da",     japanese: "～から (from, by)" },
+      { italian: "in",     japanese: "～に、～で (in, at, into)" },
+      { italian: "con",    japanese: "～と一緒に (with)" },
+      { italian: "su",     japanese: "～の上に (on)" },
+      { italian: "per",    japanese: "～のために (for)" },
+      { italian: "tra",    japanese: "～の間に (between, among) [用例: * amici]" },
+      { italian: "fra",    japanese: "～の間に (between, among) [用例: * poco]" },
+      { italian: "senza",  japanese: "～なしで (without)" },
+      { italian: "sotto",  japanese: "～の下に (under)" },
+      { italian: "sopra",  japanese: "～の上に (above)" }
+    ];
+
+    // Corresponding audio files
+    const audioFiles = [
+      "audio_it_prepositions1/01_di.mp3",
+      "audio_it_prepositions1/02_a.mp3",
+      "audio_it_prepositions1/03_da.mp3",
+      "audio_it_prepositions1/04_in.mp3",
+      "audio_it_prepositions1/05_con.mp3",
+      "audio_it_prepositions1/06_su.mp3",
+      "audio_it_prepositions1/07_per.mp3",
+      "audio_it_prepositions1/08_tra.mp3",
+      "audio_it_prepositions1/09_fra.mp3",
+      "audio_it_prepositions1/10_senza.mp3",
+      "audio_it_prepositions1/11_sotto.mp3",
+      "audio_it_prepositions1/12_sopra.mp3"
+    ];
+
+    const totalQuestions = 10;
+    let quizQuestions = [];
+    let currentQuestionIndex = 0;
+    let score = 0;
+
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+
+    function initializeQuiz() {
+      const copy = [...vocabulary];
+      shuffle(copy);
+      quizQuestions = copy.slice(0, Math.min(totalQuestions, copy.length));
+      currentQuestionIndex = 0;
+      score = 0;
+      document.getElementById("progress").style.display = "block";
+      document.getElementById("question").style.display = "block";
+      document.getElementById("choices").style.display = "flex";
+      document.getElementById("feedback").style.display = "block";
+      document.getElementById("next-button").style.display = "none";
+      document.getElementById("result").style.display = "none";
+      document.getElementById("try-again-button").style.display = "none";
+      showQuestion();
+    }
+
+    function showQuestion() {
+      const audioPlayer = document.getElementById("audioPlayer");
+      audioPlayer.pause();
+      audioPlayer.currentTime = 0;
+      audioPlayer.style.display = "none";
+
+      const data = quizQuestions[currentQuestionIndex];
+      document.getElementById("progress").innerText =
+        `Question ${currentQuestionIndex + 1} of ${quizQuestions.length}`;
+      document.getElementById("question").innerText = data.japanese;
+      document.getElementById("feedback").innerText = "";
+      document.getElementById("next-button").style.display = "none";
+
+      const choices = [data.italian];
+      const wrong = vocabulary.filter(item => item.italian !== data.italian);
+      shuffle(wrong);
+      for (let i = 0; i < 3; i++) choices.push(wrong[i].italian);
+      shuffle(choices);
+
+      const container = document.getElementById("choices");
+      container.innerHTML = "";
+      choices.forEach(text => {
+        const btn = document.createElement("button");
+        btn.innerText = text;
+        btn.className = "choice-button";
+        btn.onclick = () => selectAnswer(btn, data.italian);
+        container.appendChild(btn);
+      });
+    }
+
+    function selectAnswer(btn, correct) {
+      document.querySelectorAll(".choice-button").forEach(b => b.disabled = true);
+      if (btn.innerText === correct) {
+        btn.classList.add("correct");
+        document.getElementById("feedback").innerText = "正解です！";
+        score++;
+      } else {
+        btn.classList.add("incorrect");
+        document.getElementById("feedback").innerText = `不正解です。正解は '${correct}' です。`;
+        document.querySelectorAll(".choice-button").forEach(b => {
+          if (b.innerText === correct) b.classList.add("correct");
+        });
+      }
+      const idx = vocabulary.findIndex(item => item.italian === correct);
+      const audio = document.getElementById("audioPlayer");
+      audio.src = audioFiles[idx];
+      audio.style.display = "block";
+      audio.play();
+
+      document.getElementById("next-button").style.display = "block";
+    }
+
+    function showResults() {
+      document.getElementById("progress").style.display = "none";
+      document.getElementById("question").style.display = "none";
+      document.getElementById("choices").style.display = "none";
+      document.getElementById("feedback").style.display = "none";
+      document.getElementById("next-button").style.display = "none";
+      const res = document.getElementById("result");
+      res.style.display = "block";
+      res.innerHTML = `<p>結果: ${score} 問正解 / ${quizQuestions.length} 問中</p>
+                       <p>Total Points: ${score} points</p>`;
+      document.getElementById("try-again-button").style.display = "block";
+    }
+
+    document.getElementById("next-button").addEventListener("click", () => {
+      currentQuestionIndex++;
+      if (currentQuestionIndex < quizQuestions.length) {
+        showQuestion();
+      } else {
+        showResults();
+      }
+    });
+
+    document.getElementById("try-again-button").addEventListener("click", initializeQuiz);
+
+    window.onload = initializeQuiz;
+  </script>
+</body>
+</html>

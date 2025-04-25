@@ -1,8 +1,9 @@
+<!-- File: vocab_it_basic_verbs_quiz2.html -->
 <!DOCTYPE html>
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>フランス語「挨拶」単語クイズ</title>
+  <title>イタリア語「基本動詞」単語クイズ2</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -70,8 +71,8 @@
       border-radius: 4px;
       background-color: #17a2b8;
       color: #fff;
-      width: 100%;
       display: block;
+      width: 100%;
     }
     #feedback {
       margin-top: 10px;
@@ -89,7 +90,7 @@
 </head>
 <body>
   <div id="quiz-container">
-    <h1>フランス語「挨拶」単語クイズ</h1>
+    <h1>イタリア語「基本動詞」単語クイズ2</h1>
     <div id="progress"></div>
     <div id="question"></div>
     <div id="choices"></div>
@@ -101,36 +102,44 @@
   </div>
 
   <script>
-    // Greetings vocabulary data
+    // Vocabulary data (andare + venire)
     const vocabulary = [
-      { french: "bonjour",       japanese: "こんにちは" },
-      { french: "salut",         japanese: "やあ／元気？" },
-      { french: "bonsoir",       japanese: "こんばんは" },
-      { french: "coucou",        japanese: "ちょっとういんく" },
-      { french: "à bientôt",     japanese: "また近いうちに" },
-      { french: "à demain",      japanese: "また明日" },
-      { french: "bonne journée", japanese: "良い一日を" },
-      { french: "bonne nuit",    japanese: "おやすみなさい" },
-      { french: "au revoir",     japanese: "さようなら" },
-      { french: "adieu",         japanese: "永遠の別れ" },
-      { french: "comment ça va?",japanese: "調子はどう？" },
-      { french: "bienvenu(e)",   japanese: "ようこそ" }
+      { italian: "andare",      japanese: "行く (go)" },
+      { italian: "io vado",     japanese: "私は行く (I go)" },
+      { italian: "tu vai",      japanese: "君は行く (you go; sg)" },
+      { italian: "lui va",      japanese: "彼は行く (he goes)" },
+      { italian: "lei va",      japanese: "彼女は行く (she goes)" },
+      { italian: "noi andiamo", japanese: "我々は行く (we go)" },
+      { italian: "voi andate",  japanese: "あなたは行く (you go; pl)" },
+      { italian: "loro vanno",  japanese: "彼ら/彼女らは行く (they go)" },
+      { italian: "venire",      japanese: "来る (come)" },
+      { italian: "io vengo",    japanese: "私は来る (I come)" },
+      { italian: "tu vieni",    japanese: "君は来る (you come; sg)" },
+      { italian: "lui viene",   japanese: "彼は来る (he comes)" },
+      { italian: "lei viene",   japanese: "彼女は来る (she comes)" },
+      { italian: "noi veniamo", japanese: "我々は来る (we come)" },
+      { italian: "voi venite",  japanese: "あなたは来る (you come; pl)" },
+      { italian: "loro vengono",japanese: "彼ら/彼女らは来る (they come)" }
     ];
 
     // Corresponding audio files
     const audioFiles = [
-      "audio_fr_greetings/01_bonjour.mp3",
-      "audio_fr_greetings/02_salut.mp3",
-      "audio_fr_greetings/03_bonsoir.mp3",
-      "audio_fr_greetings/04_coucou.mp3",
-      "audio_fr_greetings/05_a_bientot.mp3",
-      "audio_fr_greetings/06_a_demain.mp3",
-      "audio_fr_greetings/07_bonne_journee.mp3",
-      "audio_fr_greetings/08_bonne_nuit.mp3",
-      "audio_fr_greetings/09_au_revoir.mp3",
-      "audio_fr_greetings/10_adieu.mp3",
-      "audio_fr_greetings/11_comment_ca_va.mp3",
-      "audio_fr_greetings/12_bienvenue.mp3"
+      "audio_it_basic_verb2/01_andare.mp3",
+      "audio_it_basic_verb2/02_io_vado.mp3",
+      "audio_it_basic_verb2/03_tu_vai.mp3",
+      "audio_it_basic_verb2/04_lui_va.mp3",
+      "audio_it_basic_verb2/05_lei_va.mp3",
+      "audio_it_basic_verb2/06_noi_andiamo.mp3",
+      "audio_it_basic_verb2/07_voi_andate.mp3",
+      "audio_it_basic_verb2/08_loro_vanno.mp3",
+      "audio_it_basic_verb2/09_venire.mp3",
+      "audio_it_basic_verb2/10_io_vengo.mp3",
+      "audio_it_basic_verb2/11_tu_vieni.mp3",
+      "audio_it_basic_verb2/12_lui_viene.mp3",
+      "audio_it_basic_verb2/13_lei_viene.mp3",
+      "audio_it_basic_verb2/14_noi_veniamo.mp3",
+      "audio_it_basic_verb2/15_voi_venite.mp3",
+      "audio_it_basic_verb2/16_loro_vengono.mp3"
     ];
 
     const totalQuestions = 10;
@@ -138,7 +147,6 @@
     let currentQuestionIndex = 0;
     let score = 0;
 
-    // Fisher-Yates shuffle
     function shuffle(array) {
       for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -146,7 +154,6 @@
       }
     }
 
-    // Initialize quiz
     function initializeQuiz() {
       const copy = [...vocabulary];
       shuffle(copy);
@@ -163,12 +170,11 @@
       showQuestion();
     }
 
-    // Display current question
     function showQuestion() {
-      const audio = document.getElementById("audioPlayer");
-      audio.pause();
-      audio.currentTime = 0;
-      audio.style.display = "none";
+      const audioPlayer = document.getElementById("audioPlayer");
+      audioPlayer.pause();
+      audioPlayer.currentTime = 0;
+      audioPlayer.style.display = "none";
 
       const data = quizQuestions[currentQuestionIndex];
       document.getElementById("progress").innerText =
@@ -177,10 +183,10 @@
       document.getElementById("feedback").innerText = "";
       document.getElementById("next-button").style.display = "none";
 
-      const choices = [data.french];
-      const wrong = vocabulary.filter(item => item.french !== data.french);
+      const choices = [data.italian];
+      const wrong = vocabulary.filter(item => item.italian !== data.italian);
       shuffle(wrong);
-      for (let i = 0; i < 3; i++) choices.push(wrong[i].french);
+      for (let i = 0; i < 3; i++) choices.push(wrong[i].italian);
       shuffle(choices);
 
       const container = document.getElementById("choices");
@@ -189,12 +195,11 @@
         const btn = document.createElement("button");
         btn.innerText = text;
         btn.className = "choice-button";
-        btn.onclick = () => selectAnswer(btn, data.french);
+        btn.onclick = () => selectAnswer(btn, data.italian);
         container.appendChild(btn);
       });
     }
 
-    // Handle answer selection
     function selectAnswer(btn, correct) {
       document.querySelectorAll(".choice-button").forEach(b => b.disabled = true);
       if (btn.innerText === correct) {
@@ -208,7 +213,7 @@
           if (b.innerText === correct) b.classList.add("correct");
         });
       }
-      const idx = vocabulary.findIndex(v => v.french === correct);
+      const idx = vocabulary.findIndex(item => item.italian === correct);
       const audio = document.getElementById("audioPlayer");
       audio.src = audioFiles[idx];
       audio.style.display = "block";
@@ -217,17 +222,6 @@
       document.getElementById("next-button").style.display = "block";
     }
 
-    // Next button handler
-    document.getElementById("next-button").addEventListener("click", () => {
-      currentQuestionIndex++;
-      if (currentQuestionIndex < quizQuestions.length) {
-        showQuestion();
-      } else {
-        showResults();
-      }
-    });
-
-    // Show results
     function showResults() {
       document.getElementById("progress").style.display = "none";
       document.getElementById("question").style.display = "none";
@@ -241,10 +235,17 @@
       document.getElementById("try-again-button").style.display = "block";
     }
 
-    // Try Again handler
+    document.getElementById("next-button").addEventListener("click", () => {
+      currentQuestionIndex++;
+      if (currentQuestionIndex < quizQuestions.length) {
+        showQuestion();
+      } else {
+        showResults();
+      }
+    });
+
     document.getElementById("try-again-button").addEventListener("click", initializeQuiz);
 
-    // Start quiz
     window.onload = initializeQuiz;
   </script>
 </body>

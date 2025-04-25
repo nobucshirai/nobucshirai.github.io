@@ -1,9 +1,8 @@
-<!-- File: vocab_fr_basic_verbs_quiz1.html -->
 <!DOCTYPE html>
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>フランス語基本動詞クイズ1</title>
+  <title>イタリア語「挨拶」単語クイズ</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -90,7 +89,7 @@
 </head>
 <body>
   <div id="quiz-container">
-    <h1>フランス語基本動詞クイズ1</h1>
+    <h1>イタリア語「挨拶」単語クイズ</h1>
     <div id="progress"></div>
     <div id="question"></div>
     <div id="choices"></div>
@@ -102,48 +101,34 @@
   </div>
 
   <script>
-    // Vocabulary data
+    // Vocabulary data for greetings
     const vocabulary = [
-      { french: "être",         japanese: "～である (be)" },
-      { french: "je suis",      japanese: "私はである (I am)" },
-      { french: "tu es",        japanese: "君はである (you are; sg)" },
-      { french: "il est",       japanese: "彼はである (he is)" },
-      { french: "elle est",     japanese: "彼女はである (she is)" },
-      { french: "nous sommes",  japanese: "我々はである (we are)" },
-      { french: "vous êtes",    japanese: "あなたはである (you are; pl)" },
-      { french: "ils sont",     japanese: "彼らはである (they are; m)" },
-      { french: "elles sont",   japanese: "彼女らはである (they are; f)" },
-      { french: "avoir",        japanese: "持つ (have)" },
-      { french: "j'ai",         japanese: "私は持っている (I have)" },
-      { french: "tu as",        japanese: "君は持っている (you have; sg)" },
-      { french: "il a",         japanese: "彼は持っている (he has)" },
-      { french: "elle a",       japanese: "彼女は持っている (she has)" },
-      { french: "nous avons",   japanese: "我々は持っている (we have)" },
-      { french: "vous avez",    japanese: "あなたは持っている (you have; pl)" },
-      { french: "ils ont",      japanese: "彼らは持っている (they have; m)" },
-      { french: "elles ont",    japanese: "彼女らは持っている (they have; f)" }
+      { italian: "ciao",        japanese: "やあ／バイバイ" },
+      { italian: "buongiorno",  japanese: "おはよう／こんにちは" },
+      { italian: "buonasera",   japanese: "こんばんは" },
+      { italian: "arrivederci", japanese: "さようなら" },
+      { italian: "salve",       japanese: "こんにちは（丁寧）" },
+      { italian: "a presto",    japanese: "またすぐに" },
+      { italian: "a domani",    japanese: "また明日" },
+      { italian: "buonanotte",  japanese: "おやすみなさい" },
+      { italian: "a dopo",      japanese: "また後で" },
+      { italian: "come stai?",  japanese: "元気？" },
+      { italian: "benvenuto/a", japanese: "ようこそ" }
     ];
 
-    // Corresponding audio files
+    // Corresponding audio files for greetings
     const audioFiles = [
-      "audio_fr/01_etre.mp3",
-      "audio_fr/02_je_suis.mp3",
-      "audio_fr/03_tu_es.mp3",
-      "audio_fr/04_il_est.mp3",
-      "audio_fr/05_elle_est.mp3",
-      "audio_fr/06_nous_sommes.mp3",
-      "audio_fr/07_vous_etes.mp3",
-      "audio_fr/08_ils_sont.mp3",
-      "audio_fr/09_elles_sont.mp3",
-      "audio_fr/10_avoir.mp3",
-      "audio_fr/11_j_ai.mp3",
-      "audio_fr/12_tu_as.mp3",
-      "audio_fr/13_il_a.mp3",
-      "audio_fr/14_elle_a.mp3",
-      "audio_fr/15_nous_avons.mp3",
-      "audio_fr/16_vous_avez.mp3",
-      "audio_fr/17_ils_ont.mp3",
-      "audio_fr/18_elles_ont.mp3"
+      "audio_it/01_ciao.mp3",
+      "audio_it/02_buongiorno.mp3",
+      "audio_it/03_buonasera.mp3",
+      "audio_it/04_arrivederci.mp3",
+      "audio_it/05_salve.mp3",
+      "audio_it/06_a_presto.mp3",
+      "audio_it/07_a_domani.mp3",
+      "audio_it/08_buonanotte.mp3",
+      "audio_it/09_a_dopo.mp3",
+      "audio_it/10_come_stai.mp3",
+      "audio_it/11_benvenuto.mp3"
     ];
 
     const totalQuestions = 10;
@@ -166,12 +151,10 @@
       quizQuestions = copy.slice(0, Math.min(totalQuestions, copy.length));
       currentQuestionIndex = 0;
       score = 0;
-      // Show quiz elements
       document.getElementById("progress").style.display = "block";
       document.getElementById("question").style.display = "block";
       document.getElementById("choices").style.display = "flex";
       document.getElementById("feedback").style.display = "block";
-      // Hide control elements
       document.getElementById("next-button").style.display = "none";
       document.getElementById("result").style.display = "none";
       document.getElementById("try-again-button").style.display = "none";
@@ -192,21 +175,19 @@
       document.getElementById("feedback").innerText = "";
       document.getElementById("next-button").style.display = "none";
 
-      // Prepare choices
-      const choices = [data.french];
-      const wrong = vocabulary.filter(item => item.french !== data.french);
+      const choices = [data.italian];
+      const wrong = vocabulary.filter(item => item.italian !== data.italian);
       shuffle(wrong);
-      for (let i = 0; i < 3; i++) choices.push(wrong[i].french);
+      for (let i = 0; i < 3; i++) choices.push(wrong[i].italian);
       shuffle(choices);
 
-      // Render choice buttons
       const container = document.getElementById("choices");
       container.innerHTML = "";
       choices.forEach(text => {
         const btn = document.createElement("button");
         btn.innerText = text;
         btn.className = "choice-button";
-        btn.onclick = () => selectAnswer(btn, data.french);
+        btn.onclick = () => selectAnswer(btn, data.italian);
         container.appendChild(btn);
       });
     }
@@ -225,8 +206,7 @@
           if (b.innerText === correct) b.classList.add("correct");
         });
       }
-      // Play audio
-      const idx = vocabulary.findIndex(item => item.french === correct);
+      const idx = vocabulary.findIndex(item => item.italian === correct);
       const audio = document.getElementById("audioPlayer");
       audio.src = audioFiles[idx];
       audio.style.display = "block";
@@ -237,13 +217,11 @@
 
     // Show results
     function showResults() {
-      // Hide quiz elements
       document.getElementById("progress").style.display = "none";
       document.getElementById("question").style.display = "none";
       document.getElementById("choices").style.display = "none";
       document.getElementById("feedback").style.display = "none";
       document.getElementById("next-button").style.display = "none";
-      // Display result
       const res = document.getElementById("result");
       res.style.display = "block";
       res.innerHTML = `<p>結果: ${score} 問正解 / ${quizQuestions.length} 問中</p>
@@ -251,7 +229,6 @@
       document.getElementById("try-again-button").style.display = "block";
     }
 
-    // Next button handler
     document.getElementById("next-button").addEventListener("click", () => {
       currentQuestionIndex++;
       if (currentQuestionIndex < quizQuestions.length) {
@@ -261,10 +238,8 @@
       }
     });
 
-    // Try Again handler
     document.getElementById("try-again-button").addEventListener("click", initializeQuiz);
 
-    // Start quiz
     window.onload = initializeQuiz;
   </script>
 </body>

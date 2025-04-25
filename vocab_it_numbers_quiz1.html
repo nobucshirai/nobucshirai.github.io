@@ -1,9 +1,9 @@
-<!-- File: vocab_fr_basic_verbs_quiz1.html -->
+<!-- vocab_it_numbers_quiz1.html -->
 <!DOCTYPE html>
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>フランス語基本動詞クイズ1</title>
+  <title>イタリア語「数字1-10」単語クイズ</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -90,7 +90,7 @@
 </head>
 <body>
   <div id="quiz-container">
-    <h1>フランス語基本動詞クイズ1</h1>
+    <h1>イタリア語「数字1-10」単語クイズ</h1>
     <div id="progress"></div>
     <div id="question"></div>
     <div id="choices"></div>
@@ -102,48 +102,32 @@
   </div>
 
   <script>
-    // Vocabulary data
+    // Vocabulary data for numbers 1–10
     const vocabulary = [
-      { french: "être",         japanese: "～である (be)" },
-      { french: "je suis",      japanese: "私はである (I am)" },
-      { french: "tu es",        japanese: "君はである (you are; sg)" },
-      { french: "il est",       japanese: "彼はである (he is)" },
-      { french: "elle est",     japanese: "彼女はである (she is)" },
-      { french: "nous sommes",  japanese: "我々はである (we are)" },
-      { french: "vous êtes",    japanese: "あなたはである (you are; pl)" },
-      { french: "ils sont",     japanese: "彼らはである (they are; m)" },
-      { french: "elles sont",   japanese: "彼女らはである (they are; f)" },
-      { french: "avoir",        japanese: "持つ (have)" },
-      { french: "j'ai",         japanese: "私は持っている (I have)" },
-      { french: "tu as",        japanese: "君は持っている (you have; sg)" },
-      { french: "il a",         japanese: "彼は持っている (he has)" },
-      { french: "elle a",       japanese: "彼女は持っている (she has)" },
-      { french: "nous avons",   japanese: "我々は持っている (we have)" },
-      { french: "vous avez",    japanese: "あなたは持っている (you have; pl)" },
-      { french: "ils ont",      japanese: "彼らは持っている (they have; m)" },
-      { french: "elles ont",    japanese: "彼女らは持っている (they have; f)" }
+      { italian: "uno",    japanese: "1" },
+      { italian: "due",    japanese: "2" },
+      { italian: "tre",    japanese: "3" },
+      { italian: "quattro",japanese: "4" },
+      { italian: "cinque", japanese: "5" },
+      { italian: "sei",    japanese: "6" },
+      { italian: "sette",  japanese: "7" },
+      { italian: "otto",   japanese: "8" },
+      { italian: "nove",   japanese: "9" },
+      { italian: "dieci",  japanese: "10" }
     ];
 
-    // Corresponding audio files
+    // Corresponding audio files for 1–10
     const audioFiles = [
-      "audio_fr/01_etre.mp3",
-      "audio_fr/02_je_suis.mp3",
-      "audio_fr/03_tu_es.mp3",
-      "audio_fr/04_il_est.mp3",
-      "audio_fr/05_elle_est.mp3",
-      "audio_fr/06_nous_sommes.mp3",
-      "audio_fr/07_vous_etes.mp3",
-      "audio_fr/08_ils_sont.mp3",
-      "audio_fr/09_elles_sont.mp3",
-      "audio_fr/10_avoir.mp3",
-      "audio_fr/11_j_ai.mp3",
-      "audio_fr/12_tu_as.mp3",
-      "audio_fr/13_il_a.mp3",
-      "audio_fr/14_elle_a.mp3",
-      "audio_fr/15_nous_avons.mp3",
-      "audio_fr/16_vous_avez.mp3",
-      "audio_fr/17_ils_ont.mp3",
-      "audio_fr/18_elles_ont.mp3"
+      "audio_it_numbers/01_uno.mp3",
+      "audio_it_numbers/02_due.mp3",
+      "audio_it_numbers/03_tre.mp3",
+      "audio_it_numbers/04_quattro.mp3",
+      "audio_it_numbers/05_cinque.mp3",
+      "audio_it_numbers/06_sei.mp3",
+      "audio_it_numbers/07_sette.mp3",
+      "audio_it_numbers/08_otto.mp3",
+      "audio_it_numbers/09_nove.mp3",
+      "audio_it_numbers/10_dieci.mp3"
     ];
 
     const totalQuestions = 10;
@@ -163,15 +147,13 @@
     function initializeQuiz() {
       const copy = [...vocabulary];
       shuffle(copy);
-      quizQuestions = copy.slice(0, Math.min(totalQuestions, copy.length));
+      quizQuestions = copy.slice(0, totalQuestions);
       currentQuestionIndex = 0;
       score = 0;
-      // Show quiz elements
       document.getElementById("progress").style.display = "block";
       document.getElementById("question").style.display = "block";
       document.getElementById("choices").style.display = "flex";
       document.getElementById("feedback").style.display = "block";
-      // Hide control elements
       document.getElementById("next-button").style.display = "none";
       document.getElementById("result").style.display = "none";
       document.getElementById("try-again-button").style.display = "none";
@@ -192,41 +174,42 @@
       document.getElementById("feedback").innerText = "";
       document.getElementById("next-button").style.display = "none";
 
-      // Prepare choices
-      const choices = [data.french];
-      const wrong = vocabulary.filter(item => item.french !== data.french);
+      const choices = [data.italian];
+      const wrong = vocabulary.filter(item => item.italian !== data.italian);
       shuffle(wrong);
-      for (let i = 0; i < 3; i++) choices.push(wrong[i].french);
+      for (let i = 0; i < 3; i++) choices.push(wrong[i].italian);
       shuffle(choices);
 
-      // Render choice buttons
       const container = document.getElementById("choices");
       container.innerHTML = "";
-      choices.forEach(text => {
+      choices.forEach(function(text) {
         const btn = document.createElement("button");
         btn.innerText = text;
         btn.className = "choice-button";
-        btn.onclick = () => selectAnswer(btn, data.french);
+        btn.onclick = function() { selectAnswer(btn, data.italian); };
         container.appendChild(btn);
       });
     }
 
     // Handle answer selection
     function selectAnswer(btn, correct) {
-      document.querySelectorAll(".choice-button").forEach(b => b.disabled = true);
+      document.querySelectorAll(".choice-button").forEach(function(b) {
+        b.disabled = true;
+      });
       if (btn.innerText === correct) {
         btn.classList.add("correct");
         document.getElementById("feedback").innerText = "正解です！";
         score++;
       } else {
         btn.classList.add("incorrect");
-        document.getElementById("feedback").innerText = `不正解です。正解は '${correct}' です。`;
-        document.querySelectorAll(".choice-button").forEach(b => {
+        document.getElementById("feedback").innerText = "不正解です。正解は '" + correct + "' です。";
+        document.querySelectorAll(".choice-button").forEach(function(b) {
           if (b.innerText === correct) b.classList.add("correct");
         });
       }
-      // Play audio
-      const idx = vocabulary.findIndex(item => item.french === correct);
+      const idx = vocabulary.findIndex(function(item) {
+        return item.italian === correct;
+      });
       const audio = document.getElementById("audioPlayer");
       audio.src = audioFiles[idx];
       audio.style.display = "block";
@@ -237,22 +220,19 @@
 
     // Show results
     function showResults() {
-      // Hide quiz elements
       document.getElementById("progress").style.display = "none";
       document.getElementById("question").style.display = "none";
       document.getElementById("choices").style.display = "none";
       document.getElementById("feedback").style.display = "none";
       document.getElementById("next-button").style.display = "none";
-      // Display result
       const res = document.getElementById("result");
       res.style.display = "block";
-      res.innerHTML = `<p>結果: ${score} 問正解 / ${quizQuestions.length} 問中</p>
-                       <p>Total Points: ${score} points</p>`;
+      res.innerHTML = "<p>結果: " + score + " 問正解 / " + quizQuestions.length + " 問中</p>"
+                    + "<p>Total Points: " + score + " points</p>";
       document.getElementById("try-again-button").style.display = "block";
     }
 
-    // Next button handler
-    document.getElementById("next-button").addEventListener("click", () => {
+    document.getElementById("next-button").addEventListener("click", function() {
       currentQuestionIndex++;
       if (currentQuestionIndex < quizQuestions.length) {
         showQuestion();
@@ -261,10 +241,8 @@
       }
     });
 
-    // Try Again handler
     document.getElementById("try-again-button").addEventListener("click", initializeQuiz);
 
-    // Start quiz
     window.onload = initializeQuiz;
   </script>
 </body>

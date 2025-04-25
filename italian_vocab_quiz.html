@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>フランス語単語クイズ</title>
+  <title>イタリア語単語クイズ</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -89,7 +89,7 @@
 </head>
 <body>
   <div id="quiz-container">
-    <h1>フランス語単語クイズ</h1>
+    <h1>イタリア語単語クイズ</h1>
     <div id="progress"></div>
     <div id="question"></div>
     <div id="choices"></div>
@@ -103,46 +103,42 @@
   <script>
     // Vocabulary data
     const vocabulary = [
-      { french: "être",       japanese: "～である (be)" },
-      { french: "je suis",    japanese: "私はである (I am)" },
-      { french: "tu es",      japanese: "君はである (you are; sg)" },
-      { french: "il est",     japanese: "彼はである (he is)" },
-      { french: "elle est",   japanese: "彼女はである (she is)" },
-      { french: "nous sommes", japanese: "我々はである (we are)" },
-      { french: "vous êtes",  japanese: "あなたはである (you are; pl)" },
-      { french: "ils sont",   japanese: "彼らはである (they are; m)" },
-      { french: "elles sont", japanese: "彼女らはである (they are; f)" },
-      { french: "avoir",      japanese: "持つ (have)" },
-      { french: "j'ai",       japanese: "私は持っている (I have)" },
-      { french: "tu as",      japanese: "君は持っている (you have; sg)" },
-      { french: "il a",       japanese: "彼は持っている (he has)" },
-      { french: "elle a",     japanese: "彼女は持っている (she has)" },
-      { french: "nous avons", japanese: "我々は持っている (we have)" },
-      { french: "vous avez",  japanese: "あなたは持っている (you have; pl)" },
-      { french: "ils ont",    japanese: "彼らは持っている (they have; m)" },
-      { french: "elles ont",  japanese: "彼女らは持っている (they have; f)" }
+      { italian: "essere",      japanese: "～である (be)" },
+      { italian: "io sono",     japanese: "私はである (I am)" },
+      { italian: "tu sei",      japanese: "君はである (you are; sg)" },
+      { italian: "lui è",       japanese: "彼はである (he is)" },
+      { italian: "lei è",       japanese: "彼女はである (she is)" },
+      { italian: "noi siamo",   japanese: "我々はである (we are)" },
+      { italian: "voi siete",   japanese: "あなたはである (you are; pl)" },
+      { italian: "loro sono",   japanese: "彼ら/彼女らはである (they are)" },
+      { italian: "avere",       japanese: "持つ (have)" },
+      { italian: "io ho",       japanese: "私は持っている (I have)" },
+      { italian: "tu hai",      japanese: "君は持っている (you have; sg)" },
+      { italian: "lui ha",      japanese: "彼は持っている (he has)" },
+      { italian: "lei ha",      japanese: "彼女は持っている (she has)" },
+      { italian: "noi abbiamo", japanese: "我々は持っている (we have)" },
+      { italian: "voi avete",   japanese: "あなたは持っている (you have; pl)" },
+      { italian: "loro hanno",  japanese: "彼ら/彼女らは持っている (they have)" }
     ];
 
     // Corresponding audio files
     const audioFiles = [
-      "audio_fr/01_etre.mp3",
-      "audio_fr/02_je_suis.mp3",
-      "audio_fr/03_tu_es.mp3",
-      "audio_fr/04_il_est.mp3",
-      "audio_fr/05_elle_est.mp3",
-      "audio_fr/06_nous_sommes.mp3",
-      "audio_fr/07_vous_etes.mp3",
-      "audio_fr/08_ils_sont.mp3",
-      "audio_fr/09_elles_sont.mp3",
-      "audio_fr/10_avoir.mp3",
-      "audio_fr/11_j_ai.mp3",
-      "audio_fr/12_tu_as.mp3",
-      "audio_fr/13_il_a.mp3",
-      "audio_fr/14_elle_a.mp3",
-      "audio_fr/15_nous_avons.mp3",
-      "audio_fr/16_vous_avez.mp3",
-      "audio_fr/17_ils_ont.mp3",
-      "audio_fr/18_elles_ont.mp3"
+      "audio_it/01_essere.mp3",
+      "audio_it/02_io_sono.mp3",
+      "audio_it/03_tu_sei.mp3",
+      "audio_it/04_lui_e.mp3",
+      "audio_it/05_lei_e.mp3",
+      "audio_it/06_noi_siamo.mp3",
+      "audio_it/07_voi_siete.mp3",
+      "audio_it/08_loro_sono.mp3",
+      "audio_it/09_avere.mp3",
+      "audio_it/10_io_ho.mp3",
+      "audio_it/11_tu_hai.mp3",
+      "audio_it/12_lui_ha.mp3",
+      "audio_it/13_lei_ha.mp3",
+      "audio_it/14_noi_abbiamo.mp3",
+      "audio_it/15_voi_avete.mp3",
+      "audio_it/16_loro_hanno.mp3"
     ];
 
     const totalQuestions = 10;
@@ -181,8 +177,8 @@
     function showQuestion() {
       const audioPlayer = document.getElementById("audioPlayer");
       audioPlayer.pause();
-	  audioPlayer.currentTime = 0;
-	  audioPlayer.style.display = "none";
+      audioPlayer.currentTime = 0;
+      audioPlayer.style.display = "none";
 
       const data = quizQuestions[currentQuestionIndex];
       document.getElementById("progress").innerText =
@@ -192,10 +188,10 @@
       document.getElementById("next-button").style.display = "none";
 
       // Prepare choices
-      const choices = [data.french];
-      const wrong = vocabulary.filter(item => item.french !== data.french);
+      const choices = [data.italian];
+      const wrong = vocabulary.filter(item => item.italian !== data.italian);
       shuffle(wrong);
-      for (let i = 0; i < 3; i++) choices.push(wrong[i].french);
+      for (let i = 0; i < 3; i++) choices.push(wrong[i].italian);
       shuffle(choices);
 
       // Render choice buttons
@@ -205,7 +201,7 @@
         const btn = document.createElement("button");
         btn.innerText = text;
         btn.className = "choice-button";
-        btn.onclick = () => selectAnswer(btn, data.french);
+        btn.onclick = () => selectAnswer(btn, data.italian);
         container.appendChild(btn);
       });
     }
@@ -225,7 +221,7 @@
         });
       }
       // Play audio
-      const idx = vocabulary.findIndex(item => item.french === correct);
+      const idx = vocabulary.findIndex(item => item.italian === correct);
       const audio = document.getElementById("audioPlayer");
       audio.src = audioFiles[idx];
       audio.style.display = "block";

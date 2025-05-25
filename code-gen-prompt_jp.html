@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="jp">
+<head>
+  <meta charset="UTF-8" />
+  <title>CLIツール プロンプトジェネレーター</title>
+  <style>
+body {
+      max-width: 800px;
+      margin: 0 auto;
+      font-family: sans-serif;
+    }
+h1 {
+      margin-top: 1em;
+      font-size: 2em;
+    }
+textarea {
+      width: 100%;
+      height: 100px;
+      margin-bottom: 1em;
+    }
+.result-box {
+      white-space: pre-wrap;
+      border: 1px solid #ddd;
+      padding: 1em;
+      margin-top: 1em;
+    }
+.checkbox-container {
+      margin-bottom: 1em;
+    }
+label {
+      display: block;
+      margin-bottom: 0.5em;
+    }
+</style>
+</head>
+<body>
+<div id="promptContent">
+<h1>CLIツール プロンプトジェネレーター</h1>
+<textarea class="prompt-item" id="textbox" placeholder="ここにプロンプトを入力してください">を行うPython3スクリプトを生成してください。</textarea>
+<p class="prompt-item">以下の追加要件を満たしてください。</p>
+<div class="checkbox-container">
+<label class="prompt-item"><input type="checkbox" id="argparseを使ったヘルプオプションを追加" checked /> - `argparse` を使ったヘルプオプションを追加</label>
+<label class="prompt-item"><input type="checkbox" id="ドックストリングと型ヒントを追加" checked /> - ドックストリングと型ヒントを追加</label>
+<label class="prompt-item"><input type="checkbox" id="オプションフラグなしでスクリプト引数として入力ファイルを受け取る" checked /> - オプションフラグなしで、スクリプト引数として入力ファイルを受け取る</label>
+<label class="prompt-item"><input type="checkbox" id="出力ファイル名が指定されていない場合標準出力にテキストを出力" /> - 出力ファイル名が指定されていない場合、標準出力にテキストを出力</label>
+<label class="prompt-item"><input type="checkbox" id="出力をファイルに保存するオプションを追加" /> - 出力をファイルに保存するオプションを追加</label>
+<label class="prompt-item"><input type="checkbox" id="出力ファイル名を指定するオプションを追加" /> - 出力ファイル名を指定するオプションを追加</label>
+<label class="prompt-item"><input type="checkbox" id="デフォルトの出力ファイル名を設定するオプションを追加" /> - デフォルトの出力ファイル名を設定するオプションを追加</label>
+<label class="prompt-item"><input type="checkbox" id="入力ファイルのベース名をデフォルト出力名として使用" /> - 入力ファイルのベース名をデフォルト出力名として使用</label>
+<label class="prompt-item"><input type="checkbox" id="スクリプト名の候補を提示" checked /> - スクリプト名の候補を提示</label>
+<label class="prompt-item"><input type="checkbox" id="既存ファイルを上書きする際yesnoで確認デフォルトno" checked /> - 既存ファイルを上書きする際、「(y)es/(n)o」で確認（デフォルト：no）</label>
+<label class="prompt-item"><input type="checkbox" id="以下のシェバンを追加" checked /> - 以下のシェバンを追加</label>
+</div>
+<p class="prompt-item">```</p>
+<p class="prompt-item"><code>#!/usr/bin/env python3</code></p>
+<p class="prompt-item">```</p>
+</div>
+
+<button id="generateButton">Generate Prompt &amp; Copy to Clipboard</button>
+
+<div class="result-box" id="resultPrompt" hidden></div>
+
+<script>
+(function(){
+  document.getElementById("generateButton").addEventListener("click", async () => {
+    const promptItems = [];
+    const elements = document.querySelectorAll("#promptContent .prompt-item, pre code");
+    for (const el of elements) {
+      const tag = el.tagName.toLowerCase();
+      if (tag === "textarea") {
+        promptItems.push(el.value);
+      } else if (tag === "p") {
+        promptItems.push(getElementText(el));
+      } else if (tag === "label") {
+        const checkbox = el.querySelector("input[type='checkbox']");
+        if (checkbox && checkbox.checked) {
+          promptItems.push(getElementText(el));
+        }
+      } else if (tag === "code") {
+        promptItems.push(el.textContent);
+      } else if (tag === "input" && el.type === "text") {
+        promptItems.push(el.value);
+      }
+    }
+    const prompt = promptItems.join("\n");
+    navigator.clipboard.writeText(prompt)
+      .then(() => { alert("Copied to clipboard!"); })
+      .catch((err) => { alert("Failed to copy: " + err); });
+    const resultPromptDiv = document.getElementById("resultPrompt");
+    resultPromptDiv.hidden = false;
+    resultPromptDiv.textContent = prompt;
+  });
+
+  function getElementText(el) {
+    let text = "";
+    el.childNodes.forEach(node => {
+      if (node.nodeType === Node.ELEMENT_NODE && node.tagName.toLowerCase() === "input") {
+        if (node.type === "text" || node.type === "number") {
+          text += node.value;
+        }
+      } else {
+        text += node.textContent;
+      }
+    });
+    return text.replace(/\s+/g, " ").trim();
+  }
+})();
+</script>
+
+</body>
+</html>
